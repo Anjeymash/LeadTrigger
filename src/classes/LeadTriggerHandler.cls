@@ -5,6 +5,7 @@
 public with sharing class LeadTriggerHandler {
 
     public static void CampaignMemberAssignment(List<Lead> leads) {
+        List <CampaignMember> members = new List <CampaignMember>();
         Set <String> leadSources = new Set<String>();
         for (Lead lead : leads) {
             leadSources.add(lead.LeadSource);
@@ -25,10 +26,11 @@ public with sharing class LeadTriggerHandler {
                 }
             }
             if (cm != null) {
-                insert cm;
+                members.add(cm);
             } else {
                 lead.addError('Parent Campaign for ' + lead.LeadSource + ' does not exist');
             }
         }
+        insert members;
     }
 }
